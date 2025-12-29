@@ -10,29 +10,29 @@ import EmptyState from '../components/EmptyState';
 const FilterSidebar = () => {
   return (
     <aside className="w-full space-y-6">
-      <div className="border rounded-lg p-4 bg-white">
-        <h3 className="font-semibold text-gray-800 mb-4">Filter</h3>
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-900">
+        <h3 className="font-semibold text-gray-800 dark:text-white mb-4">Filter</h3>
         <div>
-          <h4 className="font-medium text-sm text-gray-700 mb-2">Jenis Toko</h4>
+          <h4 className="font-medium text-sm text-gray-700 dark:text-gray-300 mb-2">Jenis Toko</h4>
           <div className="space-y-1">
-            <label className="flex items-center text-sm">
+            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
               <input type="checkbox" className="rounded text-cyan-600" />
               <span className="ml-2">Official Store</span>
             </label>
-            <label className="flex items-center text-sm">
+            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
               <input type="checkbox" className="rounded text-cyan-600" />
               <span className="ml-2">Power Merchant</span>
             </label>
           </div>
         </div>
         <div className="mt-4">
-          <h4 className="font-medium text-sm text-gray-700 mb-2">Lokasi</h4>
+          <h4 className="font-medium text-sm text-gray-700 dark:text-gray-300 mb-2">Lokasi</h4>
           <div className="space-y-1">
-            <label className="flex items-center text-sm">
+            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
               <input type="checkbox" className="rounded text-cyan-600" />
               <span className="ml-2">Jabodetabek</span>
             </label>
-            <label className="flex items-center text-sm">
+            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
               <input type="checkbox" className="rounded text-cyan-600" />
               <span className="ml-2">Bandung</span>
             </label>
@@ -123,20 +123,20 @@ const SearchPage = () => {
 
         {/* Right Column: Title & Product Grid */}
         <div className="w-full md:w-3/4">
-          <h1 className="text-xl font-semibold text-gray-900 mt-2 mb-1">
+          <h1 className="text-xl font-semibold text-gray-900 dark:text-white mt-2 mb-1">
             Menampilkan hasil untuk{" "}
-            <span className="text-cyan-600">"{query}"</span>
+            <span className="text-cyan-600 dark:text-cyan-400">"{query}"</span>
           </h1>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
             Total {products.length} produk ditemukan
           </p>
 
           {/* Product/Store Tab - Placeholder */}
-          <div className="flex border-b mb-6">
-            <span className="py-2 px-4 border-b-2 border-cyan-600 text-cyan-600 font-semibold text-sm">
+          <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
+            <span className="py-2 px-4 border-b-2 border-cyan-600 text-cyan-600 dark:text-cyan-400 font-semibold text-sm">
               Produk
             </span>
-            <span className="py-2 px-4 text-gray-500 font-medium text-sm">
+            <span className="py-2 px-4 text-gray-500 dark:text-gray-400 font-medium text-sm">
               Toko
             </span>
           </div>

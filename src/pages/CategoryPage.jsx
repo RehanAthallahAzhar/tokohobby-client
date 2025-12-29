@@ -115,7 +115,7 @@ const CategoryPage = () => {
         
         <Link
             to="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-cyan-700 hover:text-cyan-800 mb-6 transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-cyan-700 dark:text-white hover:text-cyan-800 dark:hover:text-cyan-400 mb-6 transition-colors"
         >
             <HiOutlineArrowLeft size={18} />
             Kembali ke Beranda
@@ -123,7 +123,7 @@ const CategoryPage = () => {
 
         <CategoryHero category={category} />
 
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
             Menampilkan Produk untuk "{category.name}"
         </h2>
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { orderApi } from '../services/api';
 import { Link } from 'react-router-dom';
-import { HiOutlineArchiveBox, HiOutlineArrowLeft } from 'react-icons/hi2';
+import { HiOutlineArchiveBox, HiOutlineArrowLeft, HiOutlineClock, HiOutlineCheckCircle, HiOutlineXCircle, HiOutlineTruck, HiOutlineShoppingBag } from 'react-icons/hi2';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EmptyState from '../components/EmptyState';
 
@@ -11,72 +11,131 @@ const formatCurrency = (number) => new Intl.NumberFormat('id-ID', {
     style: 'currency', currency: 'IDR', minimumFractionDigits: 0
   }).format(number);
 
+const getStatusConfig = (status) => {
+  const configs = {
+    'PENDING_PAYMENT': {
+      color: 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-400 border-amber-300 dark:border-amber-700',
+      icon: HiOutlineClock,
+      label: 'Menunggu Pembayaran'
+    },
+    'PAID': {
+      color: 'bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-400 border-blue-300 dark:border-blue-700',
+      icon: HiOutlineCheckCircle,
+      label: 'Dibayar'
+    },
+    'SHIPPED': {
+      color: 'bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-400 border-purple-300 dark:border-purple-700',
+      icon: HiOutlineTruck,
+      label: 'Dikirim'
+    },
+    'DELIVERED': {
+      color: 'bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-400 border-green-300 dark:border-green-700',
+      icon: HiOutlineCheckCircle,
+      label: 'Selesai'
+    },
+    'CANCELED': {
+      color: 'bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-400 border-red-300 dark:border-red-700',
+      icon: HiOutlineXCircle,
+      label: 'Dibatalkan'
+    }
+  };
+  return configs[status] || configs['PENDING_PAYMENT'];
+};
+
 const OrderCard = ({ orderData, onOpenCancelModal }) => {
   const { order, items } = orderData;
+  const statusConfig = getStatusConfig(order.status);
+  const StatusIcon = statusConfig.icon;
 
   const handleCancelClick = () => {
     onOpenCancelModal(order); 
   };
 
-  let statusColor = 'bg-gray-200 text-gray-800';
-  if (order.status === 'PENDING_PAYMENT') {
-    statusColor = 'bg-yellow-100 text-yellow-800';
-  } else if (order.status === 'CANCELED') {
-    statusColor = 'bg-red-100 text-red-800';
-  } else if (order.status === 'PAID' || order.status === 'SHIPPED') {
-    statusColor = 'bg-green-100 text-green-800';
-  }
-
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="group bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/20 hover:-translate-y-1">
       {/* Header Card */}
-      <div className="p-4 bg-gray-50 border-b flex justify-between items-center">
-        <div>
-          <p className="text-xs text-gray-500">Tanggal Pesanan</p>
-          <p className="text-sm font-medium text-gray-900">
-            {new Date(order.created_at).toLocaleDateString('id-ID', {
-              weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-            })}
-          </p>
+      <div className="p-6 bg-gradient-to-r from-gray-50 via-white to-gray-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 border-b-2 border-gray-200 dark:border-gray-700">
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-2 h-2 rounded-full bg-cyan-600 dark:bg-cyan-400 animate-pulse"></div>
+              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Order ID: #{order.id}</p>
+            </div>
+            <p className="text-sm font-bold text-gray-900 dark:text-white">
+              {new Date(order.created_at).toLocaleDateString('id-ID', {
+                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+              })}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {new Date(order.created_at).toLocaleTimeString('id-ID', {
+                hour: '2-digit', minute: '2-digit'
+              })} WIB
+            </p>
+          </div>
+          <div className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm border-2 ${statusConfig.color} transition-transform group-hover:scale-105`}>
+            <StatusIcon size={20} />
+            <span>{statusConfig.label}</span>
+          </div>
         </div>
-        <span className={`text-xs font-bold px-3 py-1 rounded-full ${statusColor}`}>
-          {order.status.replace(/_/g, " ")}
-        </span>
       </div>
 
-      {/* Body Cart */}
-      <div className="p-4 space-y-3">
-        {items.map(item => (
-          <div key={item.id} className="flex gap-4">
-            <img 
-              src={`https://placehold.co/80x80/E0F2E9/333333?text=${item.product_name.split(' ')[0]}`}
-              alt={item.product_name}
-              className="w-16 h-16 rounded object-cover"
-            />
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-gray-800">{item.product_name}</p>
-              <p className="text-xs text-gray-500">Penjual: {item.seller_name}</p>
-              <p className="text-xs text-gray-500">{item.quantity} x {formatCurrency(item.product_price)}</p>
+      {/* Body Card */}
+      <div className="p-6 space-y-4 bg-white dark:bg-gray-900">
+        {items.map((item, index) => (
+          <div 
+            key={item.id} 
+            className="flex gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-all hover:border-cyan-500 dark:hover:border-cyan-400"
+            style={{ animationDelay: `${index * 50}ms` }}
+          >
+            <div className="relative group/img">
+              <div className="absolute inset-0 bg-cyan-500/20 rounded-xl opacity-0 group-hover/img:opacity-100 transition-opacity"></div>
+              <img 
+                src={`https://placehold.co/80x80/E0F2E9/333333?text=${item.product_name.split(' ')[0]}`}
+                alt={item.product_name}
+                className="w-20 h-20 rounded-xl object-cover transition-transform group-hover/img:scale-110"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-gray-900 dark:text-white mb-1 line-clamp-2">{item.product_name}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                <span className="font-medium">Penjual:</span> {item.seller_name}
+              </p>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-gray-600 dark:text-gray-400">
+                  {item.quantity} × {formatCurrency(item.product_price)}
+                </span>
+                <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400">
+                  = {formatCurrency(item.quantity * item.product_price)}
+                </span>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
       {/* Footer Card */}
-      <div className="p-4 bg-gray-50 border-t flex justify-between items-center">
-        <div className="text-sm">
-          <span className="text-gray-600">Total Belanja: </span>
-          <span className="font-bold text-lg text-cyan-600">{formatCurrency(order.total_price)}</span>
+      <div className="p-6 bg-gradient-to-r from-cyan-50 via-blue-50 to-cyan-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 border-t-2 border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Total Pembayaran</p>
+            <p className="text-2xl font-black text-cyan-600 dark:text-cyan-400">
+              {formatCurrency(order.total_price)}
+            </p>
+          </div>
+          
+          {order.status === 'PENDING_PAYMENT' && (
+            <button
+              onClick={handleCancelClick}
+              className="group/btn relative px-6 py-3 font-bold text-sm text-white bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 dark:from-red-500 dark:to-pink-500 rounded-xl shadow-lg hover:shadow-xl hover:shadow-red-500/40 transition-all duration-300 hover:-translate-y-0.5 overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover/btn:translate-x-[200%] transition-transform duration-1000"></div>
+              <span className="relative flex items-center gap-2">
+                <HiOutlineXCircle size={18} />
+                Batalkan Pesanan
+              </span>
+            </button>
+          )}
         </div>
-        
-        {order.status === 'PENDING_PAYMENT' && (
-          <button
-            onClick={handleCancelClick}
-            className="text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
-          >
-            Batalkan Pesanan
-          </button>
-        )}
       </div>
     </div>
   );
@@ -138,72 +197,98 @@ const OrderHistoryPage = () => {
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="flex h-[50vh] items-center justify-center">
-          <svg className="animate-spin h-10 w-10 text-cyan-600" />
+        <div className="flex flex-col items-center justify-center py-32">
+          <div className="inline-block w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400 font-medium">Memuat riwayat pesanan...</p>
         </div>
       );
     }
 
     if (error) {
       return (
-        <div className="text-center py-10 bg-red-100 text-red-700 rounded-lg">
-          <p><strong>Oops! Terjadi kesalahan:</strong> {error}</p>
+        <div className="p-8 bg-red-100 dark:bg-red-950 border-2 border-red-300 dark:border-red-800 text-red-800 dark:text-red-400 rounded-2xl text-center animate-fade-in">
+          <HiOutlineXCircle className="mx-auto mb-4 text-red-600 dark:text-red-400" size={48} />
+          <p className="font-bold text-lg mb-2">Oops! Terjadi kesalahan</p>
+          <p>{error}</p>
         </div>
       );
     }
 
     if (!loading && orders.length === 0) {
       return (
-        <EmptyState
-          icon={HiOutlineArchiveBox}
-          title="Belum Ada Pesanan"
-          message="Anda belum melakukan transaksi apapun. Ayo mulai belanja!"
-          linkTo="/"
-          linkText="Mulai Belanja"
-        />
+        <div className="flex flex-col items-center justify-center py-20 animate-fade-in">
+          <div className="relative mb-8">
+            <div className="absolute inset-0 bg-cyan-500/20 blur-3xl rounded-full"></div>
+            <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 p-12 rounded-full border-4 border-gray-300 dark:border-gray-700">
+              <HiOutlineArchiveBox className="text-gray-400 dark:text-gray-600" size={80} />
+            </div>
+          </div>
+          <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-3">Belum Ada Pesanan</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-8 text-center max-w-md">
+            Anda belum melakukan transaksi apapun. Ayo mulai belanja dan temukan produk favoritmu!
+          </p>
+          <Link
+            to="/"
+            className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 dark:from-cyan-500 dark:to-blue-500 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-cyan-500/40 transition-all duration-300 hover:-translate-y-1"
+          >
+            <HiOutlineShoppingBag size={24} />
+            <span>Mulai Belanja</span>
+          </Link>
+        </div>
       );
     }
 
     return (
       <div className="space-y-6">
-        {orders.map((orderData) => (
-          <OrderCard 
-            key={orderData.order.id} 
-            orderData={orderData}
-            onOpenCancelModal={handleOpenConfirmModal}
-          />
+        {orders.map((orderData, index) => (
+          <div 
+            key={orderData.order.id}
+            className="animate-fade-in"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            <OrderCard 
+              orderData={orderData}
+              onOpenCancelModal={handleOpenConfirmModal}
+            />
+          </div>
         ))}
       </div>
     );
   };
 
   return (
-    <main className="container mx-auto max-w-7xl px-4 py-8 animate-fade-in">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-extrabold text-gray-900">
-          Riwayat Pesanan Saya
-        </h1>
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-cyan-700 hover:text-cyan-800 transition-colors"
-        >
-          <HiOutlineArrowLeft size={18} />
-          Kembali Belanja
-        </Link>
-      </div>
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8">
+      <div className="container mx-auto max-w-7xl px-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-2 flex items-center gap-3">
+              <HiOutlineArchiveBox className="text-cyan-600 dark:text-cyan-400" size={40} />
+              Riwayat Pesanan
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400">Kelola dan lacak semua pesanan Anda</p>
+          </div>
+          <Link
+            to="/"
+            className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-cyan-600 dark:text-cyan-400 hover:text-white dark:hover:text-white bg-white dark:bg-gray-800 hover:bg-cyan-600 dark:hover:bg-cyan-500 border-2 border-cyan-600 dark:border-cyan-400 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/30 hover:-translate-y-0.5"
+          >
+            <HiOutlineArrowLeft className="transition-transform group-hover:-translate-x-1" size={18} />
+            Kembali Belanja
+          </Link>
+        </div>
       
-      {renderContent()}
+        {renderContent()}
 
-      <ConfirmModal
-        isOpen={isConfirmModalOpen}
-        onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={handleCancelOrder}
-        isLoading={isCanceling}
-        title="Batalkan Pesanan?"
-        message={`Anda yakin ingin membatalkan pesanan? Aksi ini tidak dapat diurungkan.`}
-        confirmText="Ya, Batalkan"
-        cancelText="Tidak"
-      />
+        <ConfirmModal
+          isOpen={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          onConfirm={handleCancelOrder}
+          isLoading={isCanceling}
+          title="Batalkan Pesanan?"
+          message={`Anda yakin ingin membatalkan pesanan? Aksi ini tidak dapat diurungkan.`}
+          confirmText="Ya, Batalkan"
+          cancelText="Tidak"
+        />
+      </div>
     </main>
   );
 };

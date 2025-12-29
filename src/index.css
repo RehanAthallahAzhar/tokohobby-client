@@ -8,7 +8,36 @@
  * Ini akan menjadi warna 'kanvas' di belakang semua kartu Anda.
 */
 body {
-  @apply bg-gray-50 text-gray-800;
+  @apply bg-gray-50 text-gray-800 transition-colors duration-300;
+}
+
+.dark body {
+  @apply bg-gray-950 text-gray-100;
+}
+
+/* Global Transitions */
+*,
+*::before,
+*::after {
+  @apply transition-colors duration-200;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-cyan-500 dark:bg-cyan-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-cyan-600 dark:bg-cyan-500;
 }
 
 /* Animasi fade-in sederhana untuk memuat halaman */
@@ -18,13 +47,95 @@ body {
       opacity: 0;
       transform: translateY(-10px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes pulse-slow {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.5s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.5s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out forwards;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 2s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 }
 
@@ -72,14 +183,14 @@ body {
 
 .category-slider .swiper-button-next,
 .category-slider .swiper-button-prev {
-  @apply text-cyan-600 bg-white shadow-md rounded-full w-10 h-10;
-  top: 45%; 
+  @apply text-cyan-600 dark:text-cyan-400 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md rounded-full w-10 h-10;
+  top: 45%;
   transition: all 0.2s ease-in-out;
 }
 
 .category-slider .swiper-button-next:hover,
 .category-slider .swiper-button-prev:hover {
-  @apply bg-cyan-50 scale-105;
+  @apply bg-cyan-50 dark:bg-gray-700 scale-105;
 }
 
 .category-slider .swiper-button-next::after,
@@ -93,6 +204,7 @@ body {
 }
 
 @media (min-width: 640px) {
+
   .category-slider .swiper-button-prev,
   .category-slider .swiper-button-next {
     @apply flex;
@@ -104,8 +216,9 @@ body {
 }
 
 .category-slider .swiper-slide {
-  @apply h-auto; 
+  @apply h-auto;
 }
-.category-slider .swiper-slide > a {
-  @apply h-full; 
+
+.category-slider .swiper-slide>a {
+  @apply h-full;
 }
