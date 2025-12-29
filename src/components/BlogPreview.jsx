@@ -77,7 +77,7 @@ const BlogPreview = () => {
                     </p>
                 </div>
                 <a
-                    href="http://localhost:81"
+                    href={import.meta.env.VITE_BLOG_FRONTEND_URL || "http://localhost:81"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-500 dark:hover:bg-cyan-600 text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/30 group"
@@ -91,7 +91,7 @@ const BlogPreview = () => {
                 {featuredBlogs.map((blog) => (
                     <a
                         key={blog.id}
-                        href={`http://localhost:81/blogs/${blog.slug}`}
+                        href={`${import.meta.env.VITE_BLOG_FRONTEND_URL || "http://localhost:81"}/blogs/${blog.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/20 hover:-translate-y-2 group border border-gray-200 dark:border-gray-700 block"

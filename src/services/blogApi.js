@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Blog API Base URL
-const BLOG_API_URL = 'http://localhost:8084';
+// Blog API Base URL - use environment variable
+const BLOG_API_URL = import.meta.env.VITE_BLOG_API_URL || 'http://localhost:8084';
 
 // Create axios instance for blog API
 export const blogApi = axios.create({
