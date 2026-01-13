@@ -1,19 +1,11 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
+import { API_ENDPOINTS } from '../config/api';
 
 const api = axios.create();
 
 api.interceptors.request.use(
   (config) => {
-    // Avoid circular dependency if possible, but Zustand read access is safe here
-    // However, importing store directly is better. 
-    // Wait, useAuthStore is a hook? Zustand stores can be used outside components
-    // via useAuthStore.getState().
-
-    // We need to make sure we import useAuthStore correctly. 
-    // In previous file check: "export const useAuthStore = create(..."
-    // So import { useAuthStore } from '../store/authStore' is likely correct if it was a named export?
-    // Let's check authStore again. Yes "export const useAuthStore".
     const token = useAuthStore.getState().token;
 
     if (token) {
@@ -48,7 +40,7 @@ api.interceptors.response.use(
 
         // Call Refresh API
         // NOTE: We use a raw axios instance to avoid infinite loops if this call also 401s
-        const refreshResponse = await axios.post('/api/v1/accounts/refresh', {
+        const refreshResponse = await axios.post(API_ENDPOINTS.ACCOUNTS.REFRESH, {
           refresh_token: refreshToken
         });
 

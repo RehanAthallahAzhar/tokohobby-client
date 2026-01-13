@@ -9,14 +9,14 @@ const addAuthToken = (config) => {
 };
 
 export const accountApi = axios.create({
-    baseURL: '/api/v1/accounts',
+    baseURL: '/api/accounts',
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
 export const productApi = axios.create({
-    baseURL: '/api/v1/products',
+    baseURL: '/api/products',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -25,7 +25,7 @@ productApi.interceptors.request.use(addAuthToken);
 
 
 export const cartApi = axios.create({
-    baseURL: '/api/v1/cart',
+    baseURL: '/api/cart',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -34,7 +34,7 @@ cartApi.interceptors.request.use(addAuthToken);
 
 
 export const orderApi = axios.create({
-    baseURL: '/api/v1/orders',
+    baseURL: '/orders',
     headers: {
         'Content-Type': 'application/json',
     },
