@@ -13,10 +13,13 @@ const ProductList = () => {
         setError(null);
         try {
             const response = await productApi.get('/');
-            setProducts(response.data.data);
+            // Defensive: ensure we always have an array
+            const productsData = response?.data?.data || response?.data || [];
+            setProducts(Array.isArray(productsData) ? productsData : []);
         } catch (err) {
             setError(err.message || 'Gagal mengambil data produk.');
-            console.error(err);
+            console.error('Failed to fetch products:', err);
+            setProducts([]); // Set empty array on error
         } finally {
             setIsLoading(false);
         }
@@ -52,9 +55,15 @@ const ProductList = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-            ))}
+            {products && products.length > 0 ? (
+                products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                ))
+            ) : (
+                <div className="col-span-full text-center py-10 text-gray-500 dark:text-gray-400">
+                    <p>Belum ada produk tersedia.</p>
+                </div>
+            )}
         </div>
         </section>
     );

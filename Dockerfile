@@ -1,6 +1,15 @@
 # Build
 FROM node:18-alpine AS builder
 WORKDIR /app
+
+# Accept build arguments
+ARG VITE_BLOG_API_URL
+ARG VITE_BLOGS_WEB_URL
+
+# Set them as environment variables for the build
+ENV VITE_BLOG_API_URL=$VITE_BLOG_API_URL
+ENV VITE_BLOGS_WEB_URL=$VITE_BLOGS_WEB_URL
+
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .

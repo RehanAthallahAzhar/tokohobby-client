@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Blog API Base URL - use environment variable
-const BLOG_API_URL = import.meta.env.VITE_BLOG_API_URL || 'http://localhost:8084';
+const BLOG_API_URL = import.meta.env.VITE_BLOG_API_URL || '';
 
 // Create axios instance for blog API
 export const blogApi = axios.create({
@@ -15,7 +15,7 @@ export const blogApi = axios.create({
 export const blogApiEndpoints = {
     // Get published blogs with pagination
     getBlogs: (page = 0, size = 3, keyword = '', categoryId = null) => {
-        let url = `/blogs?page=${page}&size=${size}&keyword=${keyword}`;
+        let url = `/api/blogs?page=${page}&size=${size}&keyword=${keyword}`;
         if (categoryId) {
             url += `&categoryId=${categoryId}`;
         }
@@ -23,13 +23,13 @@ export const blogApiEndpoints = {
     },
 
     // Get blog by slug
-    getBlogBySlug: (slug) => blogApi.get(`/blogs/${slug}`),
+    getBlogBySlug: (slug) => blogApi.get(`/api/blogs/${slug}`),
 
     // Get categories
-    getCategories: () => blogApi.get('/categories'),
+    getCategories: () => blogApi.get(`/api/categories`),
 
     // Get tags
-    getTags: () => blogApi.get('/tags'),
+    getTags: () => blogApi.get(`/api/tags`),
 };
 
 export default blogApi;
