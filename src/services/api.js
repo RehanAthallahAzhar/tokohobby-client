@@ -34,7 +34,7 @@ cartApi.interceptors.request.use(addAuthToken);
 
 
 export const orderApi = axios.create({
-    baseURL: '/orders',
+    baseURL: '/api/orders',
     headers: {
         'Content-Type': 'application/json',
     },

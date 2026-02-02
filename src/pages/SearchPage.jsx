@@ -56,7 +56,7 @@ const SearchPage = () => {
       setError(null);
       setProducts([]);
       try {
-        const response = await productApi.get(`/name/${query}`);
+        const response = await productApi.get(`/tag/${query}`);
         setProducts(response.data.data || []);
       } catch (err) {
         console.error("Gagal mencari produk:", err);

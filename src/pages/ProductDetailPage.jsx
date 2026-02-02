@@ -65,7 +65,7 @@ const ProductDetailPage = () => {
         setIsAddingToCart(true);
         setCartMessage(null);
         try {
-        await cartApi.post(`/add/${id}`, {
+        await cartApi.post(`/${id}`, {
             quantity: quantity,
             description: cartNote,
         });

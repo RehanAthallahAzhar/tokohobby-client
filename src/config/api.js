@@ -31,10 +31,10 @@ export const API_ENDPOINTS = {
 
     // Orders Service
     ORDERS: {
-        BASE: '/orders',
-        BY_ID: (id) => `/orders/${id}`,
-        CANCEL: (id) => `/orders/${id}/cancel`,
-        RESET_CACHES: '/orders/reset-caches',
+        BASE: '/api/orders',
+        BY_ID: (id) => `/api/orders/${id}`,
+        CANCEL: (id) => `/api/orders/${id}/cancel`,
+        RESET_CACHES: '/api/orders/reset-caches',
     },
 };
 

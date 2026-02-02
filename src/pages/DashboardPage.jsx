@@ -26,7 +26,7 @@ const DashboardPage = () => {
         setIsLoading(true);
         setError(null);
         try {
-        const response = await productApi.get(`/products/seller/${user.id}`);
+        const response = await productApi.get(`/seller/${user.id}`);
         setProducts(response.data.data);
         } catch (err) {
         console.error("Gagal mengambil produk:", err);
@@ -60,9 +60,9 @@ const DashboardPage = () => {
         setError(null);
         try {
         if (editingProduct) {
-            await productApi.put(`/products/update/${editingProduct.id}`, formData);
+            await productApi.put(`/update/${editingProduct.id}`, formData);
         } else {
-            await productApi.post('/products/create', formData);
+            await productApi.post('/create', formData);
         }
         fetchProducts();
         handleCloseModal();
@@ -80,7 +80,7 @@ const DashboardPage = () => {
         setIsLoading(true);
         setError(null);
         try {
-        await productApi.delete(`/products/delete/${productId}`);
+        await productApi.delete(`/delete/${productId}`);
         fetchProducts();
         } catch (err) {
         console.error("Gagal menghapus produk:", err);

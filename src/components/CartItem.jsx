@@ -25,7 +25,7 @@ const CartItem = ({ item }) => {
     console.log("MENGIRIM UPDATE KE API:", payload); 
 
     try {
-      await cartApi.put(`/update/${item.product_id}`, payload);
+      await cartApi.put(`/${item.product_id}`, payload);
       console.log("UPDATE BERHASIL. Memuat ulang keranjang...");
       fetchCart({ showLoading: false }); 
     } catch (error) {
@@ -39,7 +39,7 @@ const CartItem = ({ item }) => {
   const handleRemoveItem = async () => {
     setIsLoading(true);
     try {
-      await cartApi.delete(`/remove/${item.product_id}`);
+      await cartApi.delete(`/${item.id}`);
       fetchCart({ showLoading: false }); 
     } catch (error) {
       console.error("Gagal hapus item:", error);
