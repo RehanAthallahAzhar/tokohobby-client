@@ -45,12 +45,13 @@ api.interceptors.response.use(
         });
 
         const newAccessToken = refreshResponse.data.data.token;
+        const newRefreshToken = refreshResponse.data.data.refresh_token;
 
-        // Update Store manually (since we don't have a specific action for just updating token, 
-        // we might need to add one or just update state directly via setState if possible, 
-        // but Zustand getState() returns state, not setter. 
-        // We can use useAuthStore.setState({ token: newAccessToken })
-        useAuthStore.setState({ token: newAccessToken });
+        // Update Store with both tokens
+        useAuthStore.setState({
+          token: newAccessToken,
+          refreshToken: newRefreshToken
+        });
 
         // Update header for the failed request
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
