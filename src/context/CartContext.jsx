@@ -14,7 +14,7 @@ export const CartProvider = ({ children }) => {
 
     if (!isAuthenticated) {
       if (showLoading) setLoading(false);
-      setCart({ items: [], total_items: 0 });
+      setCart({ items: [], total_items: 0 }); // set cart empty when user doesnt login
       return;
     }
     

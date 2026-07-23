@@ -1,43 +1,44 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
-import shoppingImage from '../assets/laptop-ecommerce-icon.svg';
+import { Link, useLocation } from 'react-router-dom';
 
 const AuthLayout = ({ title, children }) => {
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
+
   return (
-    <div className="flex min-h-screen w-full items-center justify-center p-4">
-      <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20 items-center animate-fade-in">
+    <div className="min-h-screen flex flex-col relative overflow-hidden transition-colors duration-300">
+      
+      {/* Full-Page Background Image with Blur Tint Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1566577134770-3d85bb3a9cc4?auto=format&fit=crop&q=80&w=1600" 
+          alt="Hobby Collection Background" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gray-950/50 dark:bg-gray-950/70 backdrop-blur-[6px]"></div>
+      </div>
 
-        <div className="text-center md:text-left">
-          <Link to="/" className="text-5xl font-extrabold text-blue-900">
-            Hobby<span className="text-cyan-500">pedia</span>
-          </Link>
-          <h1 className="text-3xl lg:text-2xl font-bold text-blue-900 mt-4 leading-tight">
-            Hobi jadi lebih seru, bareng Tokohobby!
-          </h1>
-          <p className="text-lg text-gray-600 mt-2 mb-6">
-            Belanja kebutuhan hobimu, dari yang unik sampai langka.
-          </p>
-          
-          <img 
-            src={shoppingImage} 
-            alt="Online Shopping" 
-            className="w-full max-w-lg mx-auto md:mx-0 mb-6 object-contain rounded-lg"
-          />
-        </div>
 
-        {/* Kolom Kanan: Form Kaca */}
-        <div className="w-full max-w-md mx-auto">
-          <div className="rounded-2xl bg-white/40 backdrop-blur-lg shadow-2xl border border-white/20 p-8">
-            <h3 className="text-2xl font-bold text-center text-blue-900 mb-6">
+
+      {/* Centered Glassmorphic Form Card */}
+      <main className="flex-1 flex items-center justify-center px-6 pb-16 z-10">
+        <div className="max-w-md w-full animate-scale-in">
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-2 border-white/40 dark:border-gray-800/80 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden">
+            <div className="flex justify-center mb-3">
+              <Link to="/" className="text-xl font-black text-cyan-600 tracking-tight flex items-center gap-1.5 group">
+                <span className="bg-cyan-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-black text-sm shadow-md group-hover:scale-105 transition-transform duration-300">T</span>
+                Toko<span className="text-cyan-400 font-medium">hobby</span>
+              </Link>
+            </div>
+            
+            <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-6 text-center">
               {title}
             </h3>
             
             {children}
           </div>
         </div>
-
-      </div>
+      </main>
     </div>
   );
 };

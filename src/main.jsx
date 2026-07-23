@@ -10,11 +10,11 @@ import { ThemeProvider } from './context/ThemeContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider>
-        <AuthProvider> 
-          <CartProvider> 
-            <App />
+    <BrowserRouter>       {/* routing URL */}
+      <ThemeProvider>     {/* state: dark/light mode */}
+        <AuthProvider>    {/* state: user login/logout */}
+          <CartProvider>  {/* state: isi keranjang belanja */}
+            <App />       
           </CartProvider>
         </AuthProvider>
       </ThemeProvider>

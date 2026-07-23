@@ -56,69 +56,100 @@ const RegisterPage = () => {
     };
 
 
-    return (
-    <AuthLayout title="Create Your Account">
-        <form onSubmit={handleSubmit} className="space-y-4">
-            
-            {/* Style Pesan Error/Sukses disesuaikan untuk background terang */}
-            {error && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
-                    <span className="block sm:inline">{error}</span>
-                </div>
-            )}
-            {success && (
-                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg" role="alert">
-                    <span className="block sm:inline">{success}. Redirecting to login...</span>
-                </div>
-            )}
+  return (
+    <AuthLayout title="Daftar Akun Baru">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm" role="alert">
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
+        {success && (
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm animate-pulse" role="alert">
+            <span className="block sm:inline">{success}. Mengalihkan ke halaman masuk...</span>
+          </div>
+        )}
 
-            <input 
-              name="name" type="text" placeholder="Full Name" 
-              value={formData.name} onChange={handleChange} required 
-              className="mt-1 block w-full rounded-md border-gray-400/50 bg-white/50 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm text-gray-900 placeholder:text-gray-600"
-            />
-            <input 
-              name="username" type="text" placeholder="Username" 
-              value={formData.username} onChange={handleChange} required 
-              className="mt-1 block w-full rounded-md border-gray-400/50 bg-white/50 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm text-gray-900 placeholder:text-gray-600"
-            />
-            <input 
-              name="email" type="email" placeholder="Email" 
-              value={formData.email} onChange={handleChange} required 
-              className="mt-1 block w-full rounded-md border-gray-400/50 bg-white/50 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm text-gray-900 placeholder:text-gray-600"
-            />
-            <input 
-              name="password" type="password" placeholder="Password" 
-              value={formData.password} onChange={handleChange} required 
-              className="mt-1 block w-full rounded-md border-gray-400/50 bg-white/50 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm text-gray-900 placeholder:text-gray-600"
-            />
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-400 mb-1.5 ml-3">Nama Lengkap</label>
+          <input 
+            name="name" 
+            type="text" 
+            placeholder="Nama Lengkap Anda" 
+            value={formData.name} 
+            onChange={handleChange} 
+            required 
+            className="block w-full px-5 py-3 rounded-full border-2 border-cyan-100/80 dark:border-gray-800 bg-white dark:bg-gray-850 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 text-sm transition-all"
+          />
+        </div>
 
-            {/* <input 
-              name="role" type="password" placeholder="Password" 
-              value={formData.password} onChange={handleChange} required 
-              className="mt-1 block w-full rounded-md border-gray-400/50 bg-white/50 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm text-gray-900 placeholder:text-gray-600"
-            /> */}
-            
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading || success} 
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? <LoadingSpinner /> : 'Create Account'}
-              </button>
-            </div>
-        </form>
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-400 mb-1.5 ml-3">Username</label>
+          <input 
+            name="username" 
+            type="text" 
+            placeholder="Username unik" 
+            value={formData.username} 
+            onChange={handleChange} 
+            required 
+            className="block w-full px-5 py-3 rounded-full border-2 border-cyan-100/80 dark:border-gray-800 bg-white dark:bg-gray-850 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 text-sm transition-all"
+          />
+        </div>
 
-        {/* --- LINK (REVISI STYLE "CYAN") --- */}
-        <p className="mt-8 text-center text-sm text-gray-800">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-blue-800 hover:text-cyan-600 transition-colors duration-150">
-                Sign In
-            </Link>
-        </p>
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-400 mb-1.5 ml-3">Email</label>
+          <input 
+            name="email" 
+            type="email" 
+            placeholder="Alamat email aktif" 
+            value={formData.email} 
+            onChange={handleChange} 
+            required 
+            className="block w-full px-5 py-3 rounded-full border-2 border-cyan-100/80 dark:border-gray-800 bg-white dark:bg-gray-850 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 text-sm transition-all"
+          />
+        </div>
+
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-400 mb-1.5 ml-3">Password</label>
+          <input 
+            name="password" 
+            type="password" 
+            placeholder="••••••••" 
+            value={formData.password} 
+            onChange={handleChange} 
+            required 
+            className="block w-full px-5 py-3 rounded-full border-2 border-cyan-100/80 dark:border-gray-800 bg-white dark:bg-gray-850 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 text-sm transition-all"
+          />
+        </div>
+        
+        <div className="flex justify-end py-1 px-2">
+          <Link 
+            to="/forgot-password" 
+            className="text-xs font-bold text-cyan-600 hover:text-cyan-700 transition-colors"
+          >
+            Lupa Password?
+          </Link>
+        </div>
+
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={isLoading || success} 
+            className="w-full flex justify-center py-3.5 px-6 border border-transparent rounded-full shadow-lg shadow-cyan-500/20 text-sm font-bold text-white bg-cyan-650 hover:bg-cyan-700 hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-cyan-500/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            {isLoading ? <LoadingSpinner /> : 'Daftar Sekarang'}
+          </button>
+        </div>
+      </form>
+
+      <p className="mt-8 text-center text-sm text-gray-650 dark:text-gray-400">
+        Sudah punya akun?{' '}
+        <Link to="/login" className="font-bold text-cyan-600 hover:text-cyan-700 transition-colors duration-150">
+          Masuk Sekarang
+        </Link>
+      </p>
     </AuthLayout>
-    );
+  );
 };
 
 export default RegisterPage;

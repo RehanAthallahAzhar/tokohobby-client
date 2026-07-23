@@ -12,25 +12,27 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const verifyAuth = () => {
+
     try {
       const storedToken = localStorage.getItem('authToken');
       const storedUser = localStorage.getItem('authUser');
 
       if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+        setToken(storedToken);
+        setUser(JSON.parse(storedUser));
       } else {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('authUser');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authUser');
       }
     } catch (error) {
-      console.error("Gagal parse user dari localStorage", error);
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('authUser');
+        console.error("Gagal parse user dari localStorage", error);
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authUser');
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
     };
+
     verifyAuth();
   }, []);
 
@@ -39,11 +41,14 @@ export const AuthProvider = ({ children }) => {
       username,
       password,
     });
+
     const { data } = response.data;
     localStorage.setItem('authToken', data.token);
     localStorage.setItem('authUser', JSON.stringify(data)); 
+
     setToken(data.token);
     setUser(data); 
+    
     return response.data;
   };
 
